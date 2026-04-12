@@ -1,0 +1,78 @@
+%% LaTeX Preamble for Talagrand Concentration Report
+%% ────────────────────────────────────────────────────────────────────
+
+%% ── Packages ───────────────────────────────────────────────────────
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fontspec}
+\usepackage{microtype}
+\usepackage{./style} % Custom style file (style.sty)
+\usepackage[
+  backend=biber,
+  style=alphabetic,
+  sorting=ynt
+]{biblatex}
+
+%% ── Font Setup ───────────────────────────────────────────────────
+\setmonofont{Monaco}[
+  Scale=MatchLowercase,   % or Scale=0.9, etc.
+  Ligatures=TeX
+]
+
+%% ── Metadata ──────────────────────────────────────────────────────
+\newcommand{\projecttitlepart}{Talagrand's Concentration Inequality}
+\newcommand{\projecttitleparttwo}{on Suprema of Empirical Processes}
+\newcommand{\projecttitle}{\projecttitlepart\ \projecttitleparttwo}
+\newcommand{\coursetitle}{Theory of Empirical Processes}
+\newcommand{\institutename}{Indian Statistical Institute, Kolkata}
+
+%% ── Authors ───────────────────────────────────────────────────────
+\newcommand{\authorfirstname}{Bikram}
+\newcommand{\authorlastname}{Halder}
+\newcommand{\authortwo}{Eshan}
+\newcommand{\authortwolast}{De}
+\newcommand{\authorthree}{Saraswata}
+\newcommand{\authorthreelast}{Sensarma}
+\newcommand{\authorfour}{Sumana}
+\newcommand{\authorfourlast}{Bhattacharjee}
+\newcommand{\projectauthors}{\authorfour~\authorfourlast, \authortwo~\authortwolast, \authorfirstname~\authorlastname, \authorthree~\authorthreelast}
+
+%% ── Title & Author ────────────────────────────────────────────────
+\title{
+  \vspace{-1cm}%
+  {\large \textsc{{\textcolor{Gray}{\coursetitle}}}} \\[6pt]%
+  {\LARGE \bfseries {\textsf{\projecttitle}}}%
+}
+\author{\projectauthors \\ \vspace{0.25cm} {\normalfont \institutename}}
+\date{}
+
+%% ── Section Formatting ────────────────────────────────────────────
+\usepackage{titlesec}
+\titleformat*{\section}{\Large\sffamily\mdseries}
+\titleformat*{\subsection}{\large\sffamily\mdseries}
+\titleformat*{\subsubsection}{\normalsize\sffamily\mdseries}
+\renewcommand{\contentsname}{\rmfamily Contents}
+\renewcommand{\thesection}{\bfseries\arabic{section}}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
+
+%% ── Bibliography ─────────────────────────────────────────────────
+\addbibresource{references.bib} % BibTeX bibliography file
+
+%% ── Header / Footer ───────────────────────────────────────────────
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+% Odd pages (right-side pages)
+\fancyhead[L]{\small{\textcolor{Gray}{\projecttitlepart}}}
+\fancyhead[R]{\small{\textcolor{Gray}{\textsc{\authorfourlast, \authortwolast,  \authorlastname, \authorthreelast}}}} % Author names in header
+\fancyfoot[C]{\small\thepage}
+
+\renewcommand{\headrulewidth}{0.4pt}
+
+%% ── Hyperlinks ────────────────────────────────────────────────────
+\usepackage[colorlinks=true, linkcolor=red, citecolor=red, urlcolor=red]{hyperref}
+\hypersetup{
+  pdftitle={\projecttitle}, % Sets the PDF title
+  pdfauthor={\projectauthors}, % Optional: also sets the author in metadata
+  pdfsubject={\coursetitle} % Optional: sets the subject
+}

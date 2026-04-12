@@ -1,0 +1,72 @@
+%% ── Geometry & Fonts ─────────────────────────────────────────────
+\usepackage[a4paper, total={6.3in, 9.4in}]{geometry}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+\setmonofont{Monaco}[
+  Scale=MatchLowercase,   % or Scale=0.9, etc.
+  Ligatures=TeX
+]
+
+%% ── Math & Graphics Packages ───────────────────────────────────────
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{mathtools}
+\usepackage{mathrsfs}
+\usepackage{thmtools}
+\usepackage{bm, bbm}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{float}
+\usepackage{csquotes}
+\usepackage{framed}
+\usepackage{tcolorbox}
+\usepackage{physics}
+\usepackage{enumitem}
+
+%% ── Page formatting ───────────────────────────────────────────────────
+\setstretch{1.2}
+\setlength\parindent{0pt}
+\allowdisplaybreaks
+
+%% ── Macros ──────────────────────────────────────────────────────────────
+\newcommand{\Q}{\ensuremath{\mathbb{Q}}} % Rational numbers
+\newcommand{\N}{\ensuremath{\mathbb{N}}} % Natural numbers
+\newcommand{\Z}{\ensuremath{\mathbb{Z}}} % Integers
+\newcommand{\R}{\ensuremath{\mathbb{R}}} % Real numbers
+\newcommand{\C}{\ensuremath{\mathbb{C}}} % Complex numbers
+\renewcommand{\Pr}{\ensuremath{\mathbb{P}}} % renewed Probability symbol to the standard one
+\newcommand{\E}{\ensuremath{\mathbb{E}}} % Expectation
+\newcommand{\Var}{\ensuremath{\mathrm{Var}}} % Variance
+\newcommand{\Cov}{\ensuremath{\mathrm{Cov}}} % Covariance
+\newcommand{\indep}{\ensuremath{\perp\!\!\!\perp}} % Independence symbol
+\newcommand{\iid}{\ensuremath{\overset{\text{iid}}{\sim}}} % i.i.d. symbol
+
+%% ── Color setup ─────────────────────────────────────────────────
+% form https://latexcolor.com
+% \definecolor{gray}{rgb}{0.5, 0.5, 0.5}
+\definecolor{blue(ncs)}{rgb}{0.0, 0.53, 0.74}
+\definecolor{bluegray}{rgb}{0.4, 0.6, 0.8}
+\definecolor{darkblue}{rgb}{0.0, 0.0, 0.55}
+\definecolor{brightmaroon}{rgb}{0.76, 0.13, 0.28}
+\definecolor{cerulean}{rgb}{0.0, 0.48, 0.65}
+
+%% ── Theorem styles ────────────────────────────────────────────────
+\declaretheoremstyle[name=Theorem, headfont={\sffamily\color{darkblue}}, bodyfont={\itshape}]{thmsty}
+\declaretheorem[style=thmsty,numberwithin=section]{theorem}
+
+\declaretheoremstyle[name=Proposition,]{prosty}
+\declaretheorem[style=prosty,numberlike=theorem]{proposition}
+
+\declaretheoremstyle[name=Definition, headfont={\sffamily\color{cerulean}}]{defsty}
+\declaretheorem[style=defsty,numberlike=theorem]{definition}
+
+\declaretheoremstyle[name=Lemma, bodyfont={\itshape}, headfont={\sffamily\color{darkblue}}]{prcpsty}
+\declaretheorem[style=prcpsty,numberlike=theorem]{lemma}
+
+\declaretheoremstyle[name=Remark, headfont={\sffamily\color{brightmaroon}}]{rmksty}
+\declaretheorem[style=rmksty,numberlike=theorem]{remark}
+
+\declaretheoremstyle[name=Example, headfont={\sffamily\color{bluegray}}]{egsty}
+\declaretheorem[style=egsty,numberlike=theorem]{example}
