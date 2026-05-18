@@ -20,7 +20,7 @@ permissions:
   pages: write
   id-token: write
 
-name: Compile R code and build LaTeX
+name: Compile R code and build pdf from LaTeX source
 jobs:
   build:
     runs-on: ubuntu-latest
