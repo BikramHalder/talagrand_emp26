@@ -1,0 +1,19 @@
+Type: Code
+Package: talagrand_emp26
+Title: Talagrand's Inequality and Empirical Processes: Simulation Code and Data for the Course Project
+Authors@R: c(person( "Eshan De", role = c("aut", "ctb"), email = "eshan.de22@gmail.com"),)
+Description: Simulation code and data for the course project of the course "Empirical Processes and Talagrand's Inequality" offered in the Spring semester of 2026 at the Indian Statistical Institute, Kolkata.
+Version: 1.0.0
+Imports:
+    tidyverse,
+    latex2exp,
+    e1071,
+    randomForest
+Encoding: UTF-8
+RoxygenNote: 7.2.1
+Suggests: 
+    spelling
+Language: en-US
+URL: https://github.com/BikramHalder/talagrand_emp26
+BugReports: https://github.com/BikramHalder/talagrand_emp26/issues
+License: MIT

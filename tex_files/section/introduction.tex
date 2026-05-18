@@ -1,0 +1,21 @@
+\section{Introduction}\label{sec:introduction}
+
+Talagrand's concentration inequality for the suprema of empirical processes is one of the deepest results of modern empirical process theory. Developed by Talagrand in his seminal papers \cite{Talagrand1994, talagrand1996new, talagrand1996new2} and improved by numerous other authors, it has become one of the central tools of high-dimensional statistics, modern statistical learning theory, and geometric functional analysis. It is essentially a uniform version of Berstein's inequlaity, and thus gives the best possible concentration bounds on the suprema of about its mean. Combined with other sharp bounds on the expectated supremum (using symmetrization, entropy bounds, generic chaining, and the like), this gives extremely sharp and effective bounds on the suprema of various empirical processes. In Section \ref{sec:talagrand}, we discuss the versions of Talagrand's inequality developed by Bosquet \cite{bousquet2002bennett}, Klein-Rio \cite{klein2005concentration}, and Adamczak \cite{adamczak2008tail}. These bounds have found an enourmous number of applications in empirical risk minimisation, non-parametric estimation, oracle inequalities, model selection, and many many more.
+
+The theory of Empirical Risk Minimization (in short, ERM) remains one of the most celebrated applications of Talagrand's inequality. For a given data $X_1, X_2, \dots, X_n$ sampled independently from a probability distribution $P$, we define the empirical distribution as the measure \(P_n := \frac{1}{n}\sum_{k=1}^n \delta_{X_k},\) where $\delta_a$ denotes the Dirac mass at $a \in \mathbb{R}$. We define the \emph{excess risk} as the discrepancy
+\[\mathcal{E}_P(f) := Pf - \inf_{g \in \mathcal{F}} P_n g.\] In many statistical applications, the goal is to understand the asymptotics of the minimizer of the empirical risk $\hat{f}_n := \operatorname{argmin}_{f \in \mathcal{F}} P_n f,$ and whether it converges to the minimizer(s) of excess risk (and if so, to determine the rate of convergence). Examples of this include MLE for linear and logistic regression, binary classification,density estimation, support vector machines and a plethora of other models. In Sections \ref{sec:distr_ERM} and \ref{sec:data_ERM}, we discuss the theory of abstract ERM and provide distribution-dependent and data-dependent bounds respectively.
+
+In Section \ref{sec:excessrisk}, we develop the theoretical background for the concrete example of binary classification. We first formulate optimal prediction as a risk minimization problem and explain how the unknown true risk is approximated in practise by ER minimzation over a chosen class of classifiers. In the binary setting, the Bayes classifier $g_*$ serves as the optimal benchmark and the excess risk $L(g)-L(g_*)$ measures the performance gap between a classifier $g$ and this ideal one. A difficulty arises near the decision boundary, where the regression function $\eta(x)$ of $Y$ on $X$ is close to zero and labels are most ambiguous. Margin assumptions, such as those by Massart's and Tsybakov's, quantify how much probability mass lies in this uncertain region and allow excess risk to be related to the disagreement probability between $g$ and $g_*$.
+
+
+
+
+
+
+
+
+
+% \textbf{Organization of the Report:} We first introduce various concentration and comparison inequalities, and describe the Bosquet and Klein-Rio versions of Talagrand's inequality for the suprema of empirical processes. This is then used in 
+
+
+

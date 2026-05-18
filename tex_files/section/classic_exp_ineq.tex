@@ -1,0 +1,72 @@
+\subsection{Classical Exponential Inequalities}\label{sec:A1}
+
+Let $X_1,\ldots,X_n$ be independent random variables such that $\E X_j = 0, \qquad j=1,\ldots,n$. We state several classical exponential bounds for the sum
+\[
+  S_n:=X_1+\cdots+X_n.
+\]
+Denote
+\[
+  B_n^2:=\sum_{j=1}^n \E X_j^2.
+\]
+
+
+\begin{theorem}[Bennett, Prokhorov, Bernstein inequality] \label{thm:bennett-prokhorov-bernstein}
+  Suppose that
+  $|X_j|\le U$, for $j=1,\ldots,n$. Then, for all $t>0$,
+  \[
+    \Pr(S_n\ge t)
+    \leq
+    \exp\left(
+    -\frac{B_n^2}{U^2}\,
+    h\!\left(\frac{Ut}{B_n^2}\right)
+    \right)
+    \leq
+    \exp\left(
+    -\frac{3t}{4U}\log\!\left(1+\frac{2tU}{3B_n^2}\right)
+    \right)
+    \le
+    \exp\left(
+    -\frac{t^2}{2B_n^2+\frac{2Ut}{3}}
+    \right),
+  \]
+  where
+  \[
+    h(u):=(1+u)\log(1+u)-u, \qquad u\ge 0.
+  \]
+\end{theorem}
+
+\begin{theorem}[Hoeffding's inequality] \label{thm:hoeffding}
+  Suppose that for some numbers $a_j\le b_j$,
+  \[
+    X_j\in [a_j,b_j], \qquad \E X_j=0, \qquad j=1,\ldots,n.
+  \]
+  Then, for all $t>0$,
+  \[
+    \Pr(S_n\ge t)
+    \le
+    \exp\left(
+    -\frac{2t^2}{\sum_{j=1}^n (b_j-a_j)^2}
+    \right).
+  \]
+\end{theorem}
+
+\begin{theorem}[Bernstein-type inequality for $\psi_1$ random variables] \label{thm:bernstein-psi1}
+  Suppose that
+  \[
+    \|X_j\|_{\psi_1}\le V, \qquad j=1,\ldots,n.
+  \]
+  Then there exists a universal constant $c>0$ such that, for all $t>0$,
+  \[
+    \Pr(S_n\ge t)
+    \le
+    \exp\left(
+    -c\min\left\{\frac{t^2}{nV^2},\frac{t}{V}\right\}
+    \right).
+  \]
+\end{theorem}
+
+Bernstein's inequality immediately implies that, for all $t>0$, with probability at least $1-e^{-t}$,
+\[
+  S_n \le C\bigl(B_n\sqrt{t}+Ut\bigr),
+\]
+where $C>0$ is a numerical constant.

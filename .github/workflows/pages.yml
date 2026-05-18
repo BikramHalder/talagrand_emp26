@@ -1,0 +1,91 @@
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/**.yml"
+      - ".github/**.md"
+      - "**.tex"
+      - "**.pdf_tex"
+      - "**.sty"
+      - "**.bib"
+      - "**.cls"
+      - "**.pdf"
+      - "**.sh"
+      - "latexmkrc"
+      - "**.r"
+      - "code/DESCRIPTION"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+name: Compile R code and build LaTeX
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v6
+
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
+
+      - name: Cache R packages
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: r-5-${{ hashFiles('code/DESCRIPTION') }}
+          restore-keys: r-5-
+
+      - name: Install pak
+        run: |
+          install.packages("pak", repos = "https://r-lib.github.io/p/pak/dev/")
+        shell: Rscript {0}
+
+      - name: Install dependencies from DESCRIPTION
+        run: |
+          pak::local_install_dev_deps()
+        shell: Rscript {0}
+
+      - name: Run R code to generate plots
+        run: |
+          Rscript code/bin_classification.r
+        working-directory: ${{ github.workspace }}
+
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v4
+        with:
+          working_directory: ./tex_files
+          root_file: tgconc_report.tex
+          latexmk_shell_escape: true
+
+      - name: Create assets directory
+        run: mkdir -p assets
+
+      - name: Copy PDF to assets folder
+        run: cp tex_files/tgconc_report.pdf assets/tgconc_report.pdf
+        working-directory: ${{ github.workspace }}
+
+      - name: Verify PDF was created
+        run: |
+          if [ ! -f tex_files/tgconc_report.pdf ]; then
+            echo "PDF not found!"
+            exit 1
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: ./assets
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

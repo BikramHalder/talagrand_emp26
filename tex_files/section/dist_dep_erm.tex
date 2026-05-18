@@ -1,0 +1,106 @@
+\section{Distribution dependent Empirical Risk Minimization}\label{sec:distr_ERM}
+
+In Empirical Risk Minimization, ideally, we want a decision rule that minimizes the true risk, but since the underlying data distribution is unknown, we instead minimize the empirical risk computed from a finite sample. This naturally leads to a fundamental question: how well does the empirical solution perform on unseen data?
+
+In practice, ERM does not search the whole function space uniformly; it concentrates around a small neighborhood of near-optimal functions, known as the $\delta$-minimal set.
+
+To obtain faster, sharper convergence rates, modern learning theory uses localized, distribution-dependent analysisfor which a key tool is Talagrand's concentration inequality, which provides refined control by connecting excess risk with the variance of the loss.
+
+Here we develop these localized bounds and show how fixed-point methods based on Talagrand's inequality lead to sharp deviation and risk bounds.Our goal is to evaluate the quality of an empirical risk minimizer $\hat{f}_n := \text{argmin}_{f\in\mathcal{F}} P_n f$ by establishing tight upper bounds on its true excess risk $\mathcal{E}_P(\hat{f}_n)$.Here we focus on distribution-dependent bounds, which means the bounds explicitly depend on the unknown true probability measure $P$.
+
+\subsection{Setup and Localized Complexities}
+In order to achieve sharp bounds, we localize our analysis to the neighborhood of the true risk minimizers. Assuming the functions in the class $\mathcal{F}$ take values in $[0, 1]$, we define the excess risk of a function $f \in \mathcal{F}$ as:
+\begin{equation}
+  \mathcal{E}(f) := \mathcal{E}_P(f) := Pf - \inf_{g\in\mathcal{F}} Pg
+\end{equation}
+
+Here the analysis is restricted to the $\delta$-minimal set of the risk, which contains all functions whose excess risk is bounded by $\delta$:
+\begin{equation}
+  \mathcal{F}_P(\delta) := \{f \in \mathcal{F} : \mathcal{E}_P(f) \le \delta\}
+\end{equation}
+
+The geometry of this set is measured using a localized $L_2(P)$-diameter. We define a pseudo-metric $\rho_P$ such that $\rho_P^2(f,g) \ge P(f-g)^2 - (P(f-g))^2$. The diameter of the $\delta$-minimal set is then:
+\[
+  D(\delta) := \sup_{f,g\in\mathcal{F}_P(\delta)} \rho_P(f,g)
+\]
+
+Our objective is to measure the complexity of the function class at this scale.For that, we consider the differences of functions in the minimal set, $\mathcal{F}^{\prime}(\delta) := \{f-g : f,g \in \mathcal{F}_P(\delta)\}$, and evaluate the expected supremum of the empirical process over this class:
+\begin{equation}
+  \phi_n(\delta) := \mathbb{E}\|P_n - P\|_{\mathcal{F}^{\prime}(\delta)}
+\end{equation}
+
+\subsection{Constructing the Fixed-Point Bound}
+Koltchinskii introduces a discrete ``peeling'' or slicing approach to establish a non-random upper bound that holds uniformly over $\delta$. Let $\{\delta_j\}_{j\ge 0}$ be a decreasing sequence of positive numbers with $\delta_0 = 1$, and let $\{t_j\}_{j\ge 0}$ be a sequence of positive weights. For any $\delta \in (\delta_{j+1}, \delta_j]$, an upper bound function $U_n(\delta)$ is constructed with the help of Talagrand's concentration inequality:
+\[
+  U_n(\delta) := \phi_n(\delta_j) + \sqrt{2\frac{t_j}{n}(D^2(\delta_j) + 2\phi_n(\delta_j))} + \frac{t_j}{2n}
+\]
+
+The optimal bound on the excess risk is derived by finding the largest fixed point of this bounding function. We define this distribution-dependent bound as,
+\[
+  \delta_n(\mathcal{F}; P) := \sup\{\delta \in (0, 1] : \delta \le U_n(\delta)\}
+\]
+
+This leads to the foundational distribution-dependent guarantee for the empirical risk minimizer,
+
+\vspace{0.5em}
+\begin{theorem}[{\cite[Theorem~4.1]{koltchinskii2008}}]
+  For all $\delta \ge \delta_n(\mathcal{F}; P)$, the probability that the true excess risk of the empirical minimizer exceeds $\delta$ is exponentially bounded is
+  \[
+    \mathbb{P}\{\mathcal{E}(\hat{f}_n) > \delta\} \le \sum_{\delta_j \ge \delta} e^{-t_j}
+  \]
+\end{theorem}
+
+\subsection{Ratio Bounds for Excess Risk}
+Other than absolute bounds, it is also important to bound the ratio between the empirical excess risk, $\hat{\mathcal{E}}_n(f) := \mathcal{E}_{P_n}(f)$, and the true excess risk $\mathcal{E}_P(f)$. To express these bounds, Koltchinskii utilizes the $\flat$-transform (flat) and $\sharp$-transform (sharp) of non-negative functions.
+
+For a function $\psi : \mathbb{R}_+ \mapsto \mathbb{R}_+$, the transforms are defined as:
+\begin{itemize}
+  \item \textbf{$\flat$-transform:} $\psi^{\flat}(\delta) := \sup_{\sigma \ge \delta} \frac{\psi(\sigma)}{\sigma}$
+  \item \textbf{$\sharp$-transform:} $\psi^{\sharp}(\epsilon) := \inf\{\delta > 0 : \psi^{\flat}(\delta) \le \epsilon\}$
+\end{itemize}
+
+Defining $V_n(\delta) := U_n^{\flat}(\delta)$, we can bound the relative deviation of the empirical excess risk from the true excess risk.
+
+\vspace{0.5em}
+\begin{theorem}[{\cite[Theorem~4.2]{koltchinskii2008}}]\label{thm:ratio_bounds}
+  For all $\delta \ge \delta_n(\mathcal{F}; P)$,
+  \[
+    \mathbb{P}\left\{\sup_{f\in\mathcal{F}, \mathcal{E}(f) \ge \delta} \left|\frac{\hat{\mathcal{E}}_n(f)}{\mathcal{E}(f)} - 1\right| > V_n(\delta)\right\} \le \sum_{\delta_j \ge \delta} e^{-t_j}
+  \]
+\end{theorem}
+
+If we specifically choose the sequence $\delta_j := q^{-j}$ for some $q > 1$ and a constant $t_j = t > 0$, the probabilities in these theorems can be bounded by $(\log_q \frac{q}{\delta})e^{-t}$. However, to strictly remove this logarithmic penalty when fast rates $\mathcal{O}(n^{-1})$ are achievable, Koltchinskii defines a specific variance-penalized sequence $t_j := t\frac{\delta_j}{\sigma}$ and a corresponding threshold $\sigma_n^t := \inf\{\sigma : V_n^t(\sigma) \le 1\}$. This refines the bound significantly:
+
+\vspace{0.5em}
+\begin{theorem}[{\cite[Theorem~4.3]{koltchinskii2008}}]
+  For all $t > 0$, the absolute excess risk is bounded by:
+  \[
+    \mathbb{P}\{\mathcal{E}(\hat{f}_n) > \sigma_n^t\} \le C_q e^{-t}, \quad \text{where } C_q := \frac{q}{q-1} \vee e
+  \]
+\end{theorem}
+
+\subsection{Linking Excess Risk and Variance (Massart's Lemma)}
+A critical geometric condition in model selection is the relationship between the approximation error and the variance of the excess loss. If we assume that for some $D > 0$,
+\[
+  D(Pf - Pf_*) \ge \rho_P^2(f, f_*) \ge P(f - f_*)^2 - (P(f - f_*))^2
+\]
+we can explicitly bound $\sigma_n^t$ using the $\sharp$-transform of the localized empirical process $\omega_n(\delta) := \mathbb{E}\sup_{f\in\mathcal{F}, \rho_P(f,\bar{f}) \le \sqrt{\delta}} |(P_n - P)(f - \bar{f})|$.
+
+\vspace{0.5em}
+\begin{lemma}[{\cite[Lemma~4.1]{koltchinskii2008}}]
+  Under this variance link condition, there exists a constant $K > 0$ such that for all $\epsilon \in (0, 1]$ and $t > 0$:
+  \[
+    \sigma_n^t(\mathcal{F}; P) \le \epsilon(\inf_{\mathcal{F}} Pf - Pf_*) + \frac{1}{D}\omega_n^{\sharp}\left(\frac{\epsilon}{KD}\right) + \frac{KD}{\epsilon}\frac{t}{n}
+  \]
+\end{lemma}
+
+\subsection{ Asymptotic Rates for Donsker Classes}
+Finally, Koltchinskii demonstrates that in cases where the true risk possesses a unique minimum, the fixed-point bounds naturally yield fast asymptotic rates.
+
+\vspace{0.5em}
+\begin{theorem}[{\cite[Theorem~4.5]{koltchinskii2008}}]
+  If the function class $\mathcal{F}$ is a $P$-Donsker class and the diameter of the minimal set shrinks to zero ($D_P(\mathcal{F}; \delta) \to 0$ as $\delta \to 0$), the sequence of empirical processes is asymptotically equi-continuous. Consequently, the excess risk of the empirical risk minimizer achieves a rate faster than standard parametric rates:
+  \[
+    \mathcal{E}_P(\hat{f}_n) = o_{\mathbb{P}}(n^{-1/2}) \quad \text{as } n \to \infty
+  \]
+\end{theorem}

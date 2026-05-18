@@ -1,13 +1,13 @@
 %% ── Geometry & Fonts ─────────────────────────────────────────────
 \usepackage[a4paper, total={6.3in, 9.4in}]{geometry}
+\usepackage{fontspec}
 \usepackage[dvipsnames]{xcolor}
-\usepackage[utf8]{inputenc}
-\usepackage[english]{babel}
 
-\setmonofont{Monaco}[
-  Scale=MatchLowercase,   % or Scale=0.9, etc.
-  Ligatures=TeX
-]
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[utf8]{inputenc}
+\fi
+\usepackage[english]{babel}
 
 %% ── Math & Graphics Packages ───────────────────────────────────────
 \usepackage{amsmath, amsthm, amssymb, amsfonts}
@@ -15,6 +15,7 @@
 \usepackage{mathrsfs}
 \usepackage{thmtools}
 \usepackage{bm, bbm}
+\usepackage{dsfont}
 \usepackage{tikz}
 \usepackage{graphicx}
 \usepackage{setspace}

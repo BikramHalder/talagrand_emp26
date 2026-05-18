@@ -1,0 +1,34 @@
+% !TEX program = xelatex % (can also use "lualatex") 
+
+\documentclass[oneside,11pt]{article}
+
+\input{preamble}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\input{section/introduction.tex}
+
+\input{section/talagrand.tex}
+
+\input{section/dist_dep_ERM}
+
+\input{section/data_dep_ERM}
+
+\input{section/binary_classification.tex}
+
+\appendix
+\renewcommand{\thesection}{\Alph{section}}
+\renewcommand{\thesubsection}{\Alph{section}.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{\Alph{section}.\arabic{subsection}.\arabic{subsubsection}}
+
+\section{Appendix}
+
+\input{section/classic_exp_ineq.tex}
+
+
+\newpage
+\nocite{*} % Include entries not cited in the document
+\printbibliography
+\end{document}

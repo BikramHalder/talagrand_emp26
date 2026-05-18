@@ -3,7 +3,12 @@
 
 %% ── Packages ───────────────────────────────────────────────────────
 \usepackage[dvipsnames]{xcolor}
-\usepackage{fontspec}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+\else
+  \usepackage{fontspec}
+\fi
 \usepackage{microtype}
 \usepackage{./style} % Custom style file (style.sty)
 \usepackage[
@@ -11,16 +16,18 @@
   style=alphabetic,
   sorting=ynt
 ]{biblatex}
+\usepackage{listings}            % For formatting source code (R code)
+\usepackage{xcolor}              % For defining colors for the code 
+\usepackage{float}
+\usepackage{dsfont}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+
 
 %% ── Font Setup ───────────────────────────────────────────────────
-\setmonofont{Monaco}[
-  Scale=MatchLowercase,   % or Scale=0.9, etc.
-  Ligatures=TeX
-]
-
 %% ── Metadata ──────────────────────────────────────────────────────
 \newcommand{\projecttitlepart}{Talagrand's Concentration Inequality}
-\newcommand{\projecttitleparttwo}{on Suprema of Empirical Processes}
+\newcommand{\projecttitleparttwo}{and its Applications to Empirical Risk Minimization}
 \newcommand{\projecttitle}{\projecttitlepart\ \projecttitleparttwo}
 \newcommand{\coursetitle}{Theory of Empirical Processes}
 \newcommand{\institutename}{Indian Statistical Institute, Kolkata}
@@ -54,6 +61,7 @@
 \renewcommand{\thesection}{\bfseries\arabic{section}}
 \renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
 \renewcommand{\thesubsubsection}{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
+\numberwithin{equation}{section}
 
 %% ── Bibliography ─────────────────────────────────────────────────
 \addbibresource{references.bib} % BibTeX bibliography file
@@ -70,9 +78,11 @@
 \renewcommand{\headrulewidth}{0.4pt}
 
 %% ── Hyperlinks ────────────────────────────────────────────────────
-\usepackage[colorlinks=true, linkcolor=red, citecolor=red, urlcolor=red]{hyperref}
+\usepackage[colorlinks=true, linkcolor=red, citecolor=red, urlcolor=red, hypertexnames=false]{hyperref}
 \hypersetup{
   pdftitle={\projecttitle}, % Sets the PDF title
   pdfauthor={\projectauthors}, % Optional: also sets the author in metadata
   pdfsubject={\coursetitle} % Optional: sets the subject
 }
+\usepackage{cleveref}
+

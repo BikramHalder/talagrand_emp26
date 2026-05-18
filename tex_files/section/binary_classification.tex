@@ -1,0 +1,90 @@
+\section{Applications to Binary Classification Problems}\label{sec:excessrisk}
+\subsection{Excess risk bounds in binary classification problems}
+Let $(X,Y)$ be a random couple in $S\times T, T\subset\mathbb{R}$ with distribution $P$. Denote the marginal distribution of $X$ by $\Pi$. Assume that the random variable $X$ is observable and $Y$ is to be predicted based on an observation of $X$. Let $\ell:T\times \mathbb{R}\to \mathbb{R}$ be a loss function. Given a function $g:S\to \mathbb{R}$, we denote $(\ell \bullet g)(x,y):= \ell(y,g(x))$ as the loss suffered when $g(x)$ is used to predict $y$. The problem of optimal classification can be viewed as risk minimization.
+$$
+  \min_{g \in \mathcal{G}}\mathbb{E}(\ell(Y,g(X)))=\min_{g \in \mathcal{G}}P(l \bullet g)
+$$
+where $\mathcal{G}$ is a class of functions $g : S\to \mathbb{R}$. Since the distribution $P$ and the risk function $g \mapsto P(\ell \bullet g)$ are unknown, the risk minimization problem is replaced by the ERM problem,
+$$
+  \min_{g \in \mathcal{G}}P_n(\ell \bullet g):= \min_{g \in \mathcal{G}}\frac{1}{n}\sum_{j \in [n]}\ell(Y_j,g(X_j))
+$$
+where $(X_1,Y_1),(X_2,Y_2),\ldots,(X_n,Y_n)$ is a sample of i.i.d. copies of $(X,Y)\sim P$. Here $\mathcal{F}=\{l \bullet g:g\in \mathcal{G}\}$ can be considered as the loss class of functions.
+
+Binary classification is a prediction problem with $T=\{-1,1\}$ and $\ell (y,u)=I(y\neq u),y,u\in \{-1,1\}$(binary loss) --- it's an example of risk minimzation with a non-convex loss function. (measurable) functions $g:S \to \{-1,1\}$ are called as classifiers having risk w.r.t. to the binary loss given by
+$$
+  L(g):=P(\ell \bullet g)=P(Y\neq g(X)),
+$$
+called the generalization error. If $\eta(x)=\mathbb{E}(Y|X=x)$ denoted the regression function of $Y$ on $X$, then we observe that $Y\neq g(X)$ is equivalent to $Y.g(X)=-1$. Hence,
+\begin{align*}
+  \mathbb{E}(I(Y\neq g(X))) & =\mathbb{E}\mathbb{E}(I(Y \neq g(X))\mid X)                   \\
+                            & = \mathbb{E}\left(\frac{1-\mathbb{E}(Y g(X)\mid X)}{2}\right) \\
+                            & = \mathbb{E}\left( \frac{1-\eta(X)g(X)}{2}\right),
+\end{align*}
+which is minimized by the choice of $g_*(x)=\operatorname{sign}(\eta(x))$, called the \textit{Bayes classifier}. It's also well known for all the classifiers $g$,
+\begin{align}
+  L(g)-L(g_*) & = \frac{1}{2}\mathbb{E}[\eta(X)(g_*(X)-g(X))]                                  \\
+              & =\mathbb{E}(|\eta(X)|)                                                         \\
+              & =\int_{x:g(x)\neq g_*(x)}|\eta(x)|\Pi(dx)\label{formula: excess risk integral}
+\end{align}
+
+Suppose there exists $h\in (0,1]$ such that $\forall x \in S$, $|\eta(x)|\ge h$. This is called as 'Masssart's low noise assumption'. The parameter $h$ characterizes the level of noise in classification problems: for small values of $h$, $\eta(x)$ can be close to $0$, which is prone to more incorrect classifications. Another way to describe the level of the noise, $\Pi\{x: |\eta(x)|\le t\}\le C t^\alpha$ for some $\alpha>0$. This is known as 'Tsybakov's low noise(or margin) assumption'.
+We mention some important excess risk bounds based on these margin conditions.
+\begin{lemma}[{\cite[Lemma~5.2]{koltchinskii2008}}]\label{lemma: margin assumptions}
+  Under Massart's assumption, $L(g)-L(g_*)\ge h\Pi(\{x:g(x)\neq g_*(x)\})$. Under Tsybakov's margin assumption, $L(g)-L(g_*)\ge c\Pi^\kappa(\{x:g(x)\neq g_*(x)\})$, where $\kappa= \frac{\alpha}{1+\alpha}$ and $c>0$ is a constant.
+\end{lemma}
+Note that the first bound follows immediately from formula \ref{formula: excess risk integral}. For the second bound, it's clear one we see that for any $t>0$,
+\begin{align*}
+  L(g)-L(g_*) & \ge t\Pi\{ x: g(x) \neq g_*(x),|\eta(x)|>t\}               \\
+              & \ge t\Pi\{ x : g(x)\neq g_*(x)\}-t\Pi\{x: |\eta(x)|\le t\} \\
+              & \ge t\Pi\{ x : g(x)\neq g_*(x)\}- C t^{1+\alpha}.
+\end{align*}
+Then just substituting in the last bound the value of $t$ the solution to the equation $\Pi\{x: g(x)\neq g_*(x) \}=2Ct^\alpha$ gives the result.
+
+Denote
+$$
+  \hat{g}_n:= \operatorname{argmin}_{g \in \mathcal{G}} L_n(g) \text{ where } L_n(g)=n^{-1}\sum_{j=1}^n \mathds{1}(Y_j\neq g(X_j))
+$$
+as the empirical risk w.r.t. the binary loss (the training error).
+
+\subsection{Simulation study}
+The core theoretical idea we will be basing our work upon is that fast excess-risk rates in classification improve when Tsybakov/Massart-type margin conditions hold.
+Consider the excess risk $\mathcal{E}(f))=L(f)-L(f_*)$ of a function $f\in \mathcal{F}$, where the rate changes depending on how much mass lies near the decision boundary.
+\subsection{Simulation design}
+Generate binary classification data $X=(X_1,\ldots,X_d)\sim \text{Uniform}([-1,1]^d)$ which is the same as generating $X_i \overset{iid}{\sim}\text{Uniform}([-1,1])$ and define the regression function of $Y$ on $X$ using $\mathbb{P}(Y=1|X=x)=\frac{1}{2}+\frac{1}{2}\operatorname{sign}(x_1)|x_1|^\alpha$.
+The parameter $\alpha$ controls the margin/noise behaviour, in the sense that smaller $\alpha:$ easier classification and large $\alpha:$ many points near the boundary, i.e. a larger ambiguous region. We wish to train a bunch of classifiers (logistic regression, kNN, SVM and random forests) and measure their empirical risk, true risk and excess risk. A novel approach to this is to compute these apart from Uniform predictors, for correlated gaussian predictors, heavy-tailed ones and also under a type of non-linear decision boundary, say $x_1+x_2^2=0$ as compared to when $x_1=0$.
+So the question we want to tackle is
+\begin{quote}
+  Does the same theoretical margin exponent still predict practical excess-risk scaling under geometric distortions?
+\end{quote}
+Note that the Bayes classifier is determined by whether $\eta(x)=\mathbb{E}(Y\mid X=x)=\operatorname{sign}(x_1)|x_1|^\alpha$ is above or below 0. Thus the optimal decision boundary is $x_1=0$. The entire issue is how confidently can we classify points near this boundary? The margin is essentially $|\eta(x)| = |x_1|^\alpha$, whcih measures how sharply the class proabibilities separate away from the decision boundary. So that's why large margin means that the labels are \textit{almost deterministic} while small margin means the labels are \textit{highly noisy}. So for $X\sim \text{Uniform}([-1,1]^d)$,
+$$
+  \mathbb{P}(|\eta(X)|\le t)=\mathbb{P}(|X_1|^\alpha \le t)=\mathbb{P}(|X_1|\le t^
+  \frac{1}{\alpha})=t^\frac{1}{\alpha}.
+$$
+Small $\alpha$ means $\frac{1}{\alpha}$ is large hence the ambiguity probability decays quickly. Large $\alpha$ means $\frac{1}{\alpha}$ is small implying that ambiguity persists over a larger region.
+
+For $X\sim N_d(0,\Sigma)$ where $\Sigma=((\rho^{|i-j|}))_{i,j\in [d]}$, we note that
+$$
+  \mathbb{P}(|\eta(X)|\le t)=\mathbb{P}(|X_1|^\alpha \le t)=\mathbb{P}(|X_1|\le t^
+  \frac{1}{\alpha})=2\Phi(t^\frac{1}{\alpha})-1.
+$$
+where $\Phi(.)$ denotes the standard normal CDF. Note that the margin probability is independent of the correlation parameter $\rho$.
+
+When the Bayes decision boundary is set as $x_1+x_2^2=0$, then for Uniform$([-1,1]^d)$ predictors,
+$$P(|X_1 + X_2^2| \le t^\frac{1}{\alpha}) = \begin{cases}
+    0                                                                        & \text{if } t \le 0            \\
+    \frac{t^{1/\alpha}}{2} + \frac{1}{3} - \frac{1}{3}(1-t^{1/\alpha})^{3/2} & \text{if } 0 < t \le 1        \\
+    \frac{t^{1/\alpha}}{2} + \frac{1}{3} - \frac{1}{3}(t^{1/\alpha}-1)^{3/2} & \text{if } 1 < t \le 2^\alpha \\
+    1                                                                        & \text{if } t > 2^\alpha
+  \end{cases}$$
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.82\textwidth,height=0.45\textheight,keepaspectratio]{plots/excess_risk_plots.pdf}
+  \caption{Mean excess risk as a function of sample size $n$ across margin exponents, predictor geometries and learning methods.}
+  \label{fig:excess-risk-plots}
+\end{figure}
+
+Figure~\ref{fig:excess-risk-plots} summarizes the empirical excess-risk behaviour produced by the simulation codes \footnote{can be found at \url{https://github.com/BikramHalder/talagrand_emp26}}. For the baseline uniform predictors with the linear Bayes boundary $x_1=0$, the excess risk generally decreases as the sample size grows from $n=100$ to $n=500$, which is consistent with the theoretical expectation that larger samples improve recovery of the Bayes classifier. In the uniform setting, logistic regression is often strongest because the true boundary is linear, whereas kNN, SVM and random forests improve more unevenly because their finite-sample variance and tuning parameters interact more strongly with the local noise near the boundary.
+
+The geometric extensions show that the same margin exponent does not by itself determine the observed excess-risk scaling. Correlated Gaussian predictors often lead to flatter curves, suggesting that dependence among coordinates changes the effective geometry available to the classifiers. The heavy-tailed design also produces relatively flat or very small excess risks in several panels; this should be read with caution because the code rescales the whole design matrix by its maximum absolute value, which compresses the covariates and can alter the mass near the boundary. The nonlinear boundary $x_1+x_2^2=0$ makes the problem less aligned with linear logistic regression and highlights method dependence: more flexible classifiers can help, but they may need larger samples to overcome variance. Overall, the plot supports the qualitative trend that empirical excess risk decreases with $n$, while showing that the practical rate depends jointly on the margin exponent, predictor geometry and classifier class.

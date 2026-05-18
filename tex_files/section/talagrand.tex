@@ -1,0 +1,298 @@
+\section{Talagrand's Concentration Inequality}\label{sec:talagrand}
+
+In this section we present a class of concentration inequalities which are useful in the study of empirical risk minimization problems. We first reduce the problem of bounding the supremum of the empirical process to bounding the supremum of a Rademacher process by symmetrization, and then control the latter in probability using concentration inequalities.
+
+\smallskip
+
+Let $X_1,\ldots,X_n$ be i.i.d.\ random variables with values in a measurable space $(S,\mathcal A)$ and common distribution $P$. Denote the \textit{empirical measure} by
+\[
+  P_n \coloneqq \frac{1}{n}\sum_{j=1}^n \delta_{X_j},
+\]
+and
+\[
+  Z_n \coloneqq \sqrt{n}(P_n-P)
+\]
+be the \textit{empirical process} indexed by a class $\mathcal F$ of measurable functions on $S$, i.e.,
+\[
+  Z_n(f)=\frac{1}{\sqrt{n}}\sum_{j=1}^n (f(X_j)-P f), \qquad f\in\mathcal F.
+\]
+Our main object of interest is to study the \textit{supremum of the empirical process }over $\mathcal F$, denoted by
+\[
+  \|P_n-P\|_{\mathcal F}=\sup_{f\in\mathcal F}|(P_n-P)f|.
+\]
+Let $\varepsilon_1,\ldots,\varepsilon_n$ be i.i.d.\ Rademacher random variables (i.e., $\varepsilon_j=\pm 1$ with probability $1/2$ each), independent of $X_1,\ldots,X_n$, and define the associated \textit{Rademacher process} by
+\[
+  R_n(f):=\frac{1}{n}\sum_{j=1}^n \varepsilon_j f(X_j), \qquad f\in\mathcal F,
+\]
+with
+\[
+  \|R_n\|_{\mathcal F}:=\sup_{f\in\mathcal F}|R_n(f)|.
+\]
+
+% note of measurability assumptions ref: Dudley, van der Vaart and Wellner
+
+\subsection{Symmetrization}
+
+The Symmetrization inequality makes it possible to deduce equivalent bounds for the supremum of the empirical process and the supremum of the Rademacher process, which is easier to handle.
+
+\begin{theorem}[Symmetrization inequality]\label{thm:symmetrization}
+  Let $\mathcal F$ be a class of $P$-integrable functions and let
+  \[
+    \mathcal F_c:=\{f-P f:f\in\mathcal F\}.
+  \]
+  Then, for every convex function $\Phi:\mathbb R\to\mathbb R$,
+  \[
+    \E \Phi\!\left(\frac12 \|R_n\|_{\mathcal F_c}\right)
+    \le
+    \E \Phi\!\left(\|P_n-P\|_{\mathcal F}\right)
+    \le
+    \E \Phi\!\left(2\|R_n\|_{\mathcal F}\right).
+  \]
+  In particular,
+  \[
+    \frac12\,\E\|R_n\|_{\mathcal F_c}
+    \le
+    \E\|P_n-P\|_{\mathcal F}
+    \le
+    2\,\E\|R_n\|_{\mathcal F}.
+  \]
+\end{theorem}
+
+For a proof, see, e.g.,~\cite[Section 2.3]{van1996weak}.
+
+\subsection{Comparison Inequalities}
+
+We next look at Talagrand's comparison inequality for Rademacher sums. It allows us to control the supremum of a Rademacher process indexed by a transformed class $\phi\circ\mathcal F$ defined by
+\[
+  \phi\circ\mathcal F:=\{\phi\circ f:f\in\mathcal F\}
+\]
+in terms of the supremum of the original class $\mathcal F$ whenever $\phi$ is a contraction.
+% It is the basic device for passing from a class $\mathcal F$ to transformed classes such as $\phi\circ\mathcal F$.
+
+\begin{theorem}[Comparison inequality]\label{thm:comparison}
+  Let $\phi:\mathbb R\to\mathbb R$ satisfy $\phi(0)=0$ and
+  \[
+    |\phi(u)-\phi(v)|\le |u-v|, \qquad u,v\in\mathbb R.
+  \]
+  Then, for every convex nondecreasing function $\Phi:\mathbb R\to\mathbb R$,
+  \[
+    \E \Phi\!\left(\frac12 \|R_n\|_{\phi\circ \mathcal F}\right)
+    \le
+    \E \Phi\!\left(\|R_n\|_{\mathcal F}\right).
+  \]
+  In particular,
+  \[
+    \E\|R_n\|_{\phi\circ \mathcal F}\le 2\,\E\|R_n\|_{\mathcal F}.
+  \]
+\end{theorem}
+
+More generally, if $\phi$ is $L$-Lipschitz on an interval containing the ranges of all functions in $\mathcal F$, then
+\begin{equation} \label{eq:comparison-lipschitz}
+  \E\|R_n\|_{\phi\circ\mathcal F}\le 2L\,\E\|R_n\|_{\mathcal F}.
+\end{equation}
+A useful special case is obtained with $\phi(u)=u^2$ on $[-U,U]$, which gives
+\begin{equation} \label{eq:comparison-square}
+  \E\sup_{f\in\mathcal F}\left|\frac1n\sum_{j=1}^n \varepsilon_j f^2(X_j)\right|
+  \le
+  4U\,\E\sup_{f\in\mathcal F}\left|\frac1n\sum_{j=1}^n \varepsilon_j f(X_j)\right|
+\end{equation}
+whenever $|f|\le U$ on $S$ for all $f\in\mathcal F$.
+
+\subsection{Concentration inequalities}
+
+To pass from expectation bounds to high-probability bounds, we require uniform versions of concentration inequalities. We first recall the bounded difference inequality, which is a generalization of Hoeffding's inequality to functions of independent random objects.
+
+\begin{theorem}[Bounded difference inequality]\label{thm:bounded-difference}
+  Let $X_1,\ldots,X_n$ be independent random objects in measurable spaces $S_1,\ldots,S_n$, and let $g:S_1\times\cdots\times S_n\to\mathbb R$ be a measurable function. Let $Z=g(X_1,\ldots,X_n)$, and suppose there exist constants $c_1,\ldots,c_n\ge 0$ such that, for every $j\in\{1,\ldots,n\}$,
+  \[
+    |g(x_1,\ldots,x_j,\ldots,x_n)-g(x_1,\ldots,x_j',\ldots,x_n)|\le c_j
+  \]
+  for all choices of $x_1,\ldots,x_n,x_j'$. Then, for all $t>0$,
+  \[
+    \Pr(Z-\E Z\ge t)\le \exp\!\left(-\frac{2t^2}{\sum_{j=1}^n c_j^2}\right),
+  \]
+  and
+  \[
+    \Pr(\E Z-Z\ge t)\le \exp\!\left(-\frac{2t^2}{\sum_{j=1}^n c_j^2}\right).
+  \]
+\end{theorem}
+
+Applying this to $Z=\|P_n-P\|_{\mathcal F}$ yields the following uniform Hoeffding bound.
+
+\begin{theorem}\label{thm:uniform-hoeffding}
+  Assume that every $f\in\mathcal F$ satisfies $|f|\le U$, where $U>0$ is a constant. Then, for all $t>0$,
+  \[
+    \Pr\left(\|P_n-P\|_{\mathcal F}\ge \E\|P_n-P\|_{\mathcal F}+\frac{Ut}{\sqrt{n}}\right)
+    \le e^{-t^2/2},
+  \]
+  and
+  \[
+    \Pr\left(\|P_n-P\|_{\mathcal F}\le \E\|P_n-P\|_{\mathcal F}-\frac{Ut}{\sqrt{n}}\right)
+    \le e^{-t^2/2}.
+  \]
+\end{theorem}
+
+A much harder problem was to obtain an uniform version of Bernstein's inequality (Theorem~\ref{thm:bennett-prokhorov-bernstein}), which was resolved by Talagrand in his famous papers \cite{talagrand1996new,talagrand1996new2} on concentration inequalities for product measures and empirical processes.
+% The previous estimate uses only boundedness. Talagrand's inequality incorporates a variance term and is therefore substantially sharper.
+
+\begin{theorem}[Talagrand]\label{thm:talagrand}
+  Let $X_1,\ldots,X_n$ be independent random variables in $S$, and let $\mathcal F$ be a class of measurable functions on $S$ such that
+  \[
+    \sup_{f\in\mathcal F}\|f\|_{\infty}\le U.
+  \]
+  Then there exists a universal constant $K>0$ such that, for all $t>0$,
+  \[
+    \Pr\left(
+    \sup_{f\in\mathcal F}\left|\sum_{j=1}^n f(X_j)\right|
+    \ge
+    \E\sup_{f\in\mathcal F}\left|\sum_{j=1}^n f(X_j)\right|+t
+    \right)
+    \le
+    K\exp\!\left(-\frac{1}{K}\frac{t}{U}\log\!\left(1+\frac{tU}{V}\right)\right),
+  \]
+  where $V$ is any number satisfying
+  \[
+    V\ge \E\sup_{f\in\mathcal F}\sum_{j=1}^n f^2(X_j).
+  \]
+\end{theorem}
+
+% Using symmetrization and contraction for the square map~\eqref{eq:comparison-square}, one may take
+% \[
+%   V=n\sup_{f\in\mathcal F}P f^2+8U\,\E\sup_{f\in\mathcal F}\left|\sum_{j=1}^n \varepsilon_j f(X_j)\right|
+% \]
+
+Using the symmetrization inequality and the contraction inequality for the square map \eqref{eq:comparison-square}, it is easy to show that, in the case of i.i.d.\ random variables $X_1,\ldots,X_n$ with distribution $P$,
+\begin{equation} \label{eq:talagrand-variance}
+  \mathbb{E}\sup_{f\in\mathcal{F}} \sum_{i=1}^n f^2(X_i)
+  \le
+  n\sup_{f\in\mathcal{F}} Pf^2
+  +
+  8U\,\mathbb{E}\left\|
+  \sum_{i=1}^n \varepsilon_i f(X_i)
+  \right\|_{\mathcal{F}}.
+\end{equation}
+The right-hand side of this bound is a common choice of the quantity $V$ involved in Talagrand's inequality. Moreover, in the case when $\mathbb{E}f(X)=0$, the desymmetrization inequality yields
+\[
+  \mathbb{E}\left\|
+  \sum_{i=1}^n \varepsilon_i f(X_i)
+  \right\|_{\mathcal{F}}
+  \le
+  2\mathbb{E}\left\|
+  \sum_{i=1}^n f(X_i)
+  \right\|_{\mathcal{F}}.
+\]
+As a result, one can use Talagrand's inequality with
+\[
+  V
+  =
+  n\sup_{f\in\mathcal{F}} Pf^2
+  +
+  16U\,\mathbb{E}\left\|
+  \sum_{i=1}^n f(X_i)
+  \right\|_{\mathcal{F}},
+\]
+and the size of
+\[
+  \left\|
+  \sum_{i=1}^n f(X_i)
+  \right\|_{\mathcal{F}}
+\]
+is now controlled in terms of its expectation only.
+
+\smallskip
+
+This form of Talagrand's inequality is especially convenient. We will use the
+refinements due to Bousquet~\cite{bousquet2002bennett} and Klein--Rio~\cite{klein2002inegalite,klein2005concentration} for a class $\mathcal{F}$ of $[0,1]$-valued measurable functions (or, by rescaling, any bounded interval).
+
+\smallskip
+
+Let $\mathcal F$ be a class of measurable functions $f:S\to[0,1]$, and define
+\begin{equation*}
+  \sigma_{\mathcal F}^2:=\sup_{f\in\mathcal F}\bigl(P f^2-(P f)^2\bigr).
+\end{equation*}
+Then, for all $t>0$, the following inequalities hold.
+
+\begin{theorem}[Bousquet]\label{thm:bousquet}
+  \[
+    \Pr\left(
+    \|P_n-P\|_{\mathcal F}
+    \ge
+    \E\|P_n-P\|_{\mathcal F}
+    +\sqrt{\frac{2t}{n}\Bigl(\sigma_{\mathcal F}^2+2\E\|P_n-P\|_{\mathcal F}\Bigr)}
+    +\frac{t}{3n}
+    \right)
+    \le e^{-t}.
+  \]
+\end{theorem}
+
+\begin{theorem}[Klein--Rio]\label{thm:klein-rio}
+  \[
+    \Pr\left(
+    \|P_n-P\|_{\mathcal F}
+    \le
+    \E\|P_n-P\|_{\mathcal F}
+    -\sqrt{\frac{2t}{n}\Bigl(\sigma_{\mathcal F}^2+2\E\|P_n-P\|_{\mathcal F}\Bigr)}
+    -\frac{t}{n}
+    \right)
+    \le e^{-t}.
+  \]
+\end{theorem}
+
+Finally, when the class is not uniformly bounded, one can work with an envelope due to Adamczak~\cite{adamczak2008tail}.
+
+\begin{theorem}[Adamczak]\label{thm:adamczak}
+  Let $\mathcal F$ be a class of measurable functions on $S$ with envelope $F$, that is,
+  \[
+    |f(x)|\le F(x), \qquad x\in S,\ f\in\mathcal F.
+  \]
+  Then for every $\alpha\in(0,1)$ there exists a constant $K=K(\alpha)>0$ such that, for all $t>0$,
+  \[
+    \Pr\left(
+    \|P_n-P\|_{\mathcal F}
+    \ge
+    K\left(
+    \E\|P_n-P\|_{\mathcal F}
+    +\sigma_{\mathcal F}\sqrt{\frac{t}{n}}
+    +\left\|\max_{1\le j\le n}F(X_j)\right\|_{\psi_{\alpha}}\frac{t^{1/\alpha}}{n}
+    \right)
+    \right)
+    \le e^{-t},
+  \]
+  and
+  \[
+    \Pr\left(
+    \E\|P_n-P\|_{\mathcal F}
+    \ge
+    K\left(
+    \|P_n-P\|_{\mathcal F}
+    +\sigma_{\mathcal F}\sqrt{\frac{t}{n}}
+    +\left\|\max_{1\le j\le n}F(X_j)\right\|_{\psi_{\alpha}}\frac{t^{1/\alpha}}{n}
+    \right)
+    \right)
+    \le e^{-t}.
+  \]
+\end{theorem}
+
+One may also apply concentration inequalities to the Rademacher process, which can be viewed as an empirical process based on the sample $(X_1,\varepsilon_1),\ldots,(X_n,\varepsilon_n)$ in the space $S\times\{-1,1\}$ and indexed by the class of functions $\tilde{\mathcal F}:=\{\tilde{f}:f\in\mathcal F\}$, where $\tilde{f}(x,u):=f(x)u$, $(x,u)\in S\times\{-1,1\}$, to obtain
+\begin{equation}\label{eq:apprad}
+  \Pr\left(
+  \|R_n\|_{\mathcal F}
+  \ge
+  \E\|R_n\|_{\mathcal F}
+  +\sqrt{\frac{2t}{n}\Bigl(\sigma_{\mathcal F}^2+2\E\|R_n\|_{\mathcal F}\Bigr)}
+  +\frac{t}{3n}
+  \right)
+  \le e^{-t},
+\end{equation}
+
+% The inequalities above are the basic probabilistic input for the excess-risk bounds proved in the next sections. Symmetrization reduces empirical processes to Rademacher processes, contraction controls transformed classes, and Talagrand-type inequalities convert expectation bounds into exponential deviation bounds.
+
+% Bennet Prokhorov Bernstein
+
+% Talagrand; Symmetrization; Radamacher Complexity
+
+
+
+% Bosquet + Klein-Rio + Adamczak bounds
+
+% Idea of proof (optional)

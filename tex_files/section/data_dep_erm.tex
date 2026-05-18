@@ -1,0 +1,94 @@
+\section{Data dependent Empirical Risk Minimization}\label{sec:data_ERM}
+
+The results of the previous section are useful when the underlying probability distribution $P$ is known or is being tested for. As the calculations for the quantities $\mathcal{E}_P, \mathcal{F}(\delta), \phi_n(\mathcal{F}, \delta)$, and $D(\mathcal{F}, \delta)$ rely heavily on the knowledge of $P$, these cannot be carried out directly if $P$ is unknown. Instead, we rely on the knowledge of the empirical distribution $P_n$ to estimate these quantities and apply the fixed point method developed in the previous section. This gives rise to a \emph{data-dependent} version of ERM. The robustness of these estimates will be verified by various forms of Talagrand's concentration inequality for empirical processes. As usual, we will indicate the main results involved in the development of the theory and discuss their proofs briefly. We refer the reader to \cite[Chapter~4]{koltchinskii2008} for the detailed arguments.\\
+
+\subsection{Empirical estimates for $\phi_{n}(\mathcal{F}, \delta)$: Comparison with Rademacher Complexity}
+
+Recall that Talagrand's inequality shows the concentration of $\norm{P_n - P}$ around its mean $\phi_n(\mathcal{F}, \delta)$. Thus, the first natural step is to estimate $\mathbb{E}(\norm{P_n - P}_{\mathcal{F_0}})$ empirically for various functions classes $\mathcal{F_0}$. The usual approach in empirical process literature is to compare it to the \emph{Rademacher complexity} of the given data.
+
+\begin{definition}[Rademacher Process and Rademacher Complexity]
+  For a sample $X_1, X_2, \dots, X_n$ from $\mathcal{X}$ and a given function class $\mathcal{F}_0 \subseteq \{f: \mathcal{X} \to \mathbb{R} \text{ measurable}\}$, we define the Rademacher process as follows: for $f \in \mathcal{F}$,
+  \[
+    R_n(f) = \frac{1}{n}\sum_{i=1}^n \epsilon_i f(X_i), \text{ where } \epsilon_i \overset{\operatorname{iid}}{\sim } \operatorname{Rad}(1/2).
+  \]
+  The expected supremum of the Rademacher process over the function class $\mathcal{F}$ is called the \emph{Rademacher complexity} of the sample:
+  \[
+    \norm{R_n}_{\mathcal{F}_0} \coloneqq \mathbb{E}\left(\sup_{f \in \mathcal{F}_0}\frac{1}{n}\sum_{i=1}^n \epsilon_i f(X_i)\right)
+  \]
+\end{definition}
+
+The Rademacher complexity essentially measures the expected covariance between a random vector with independent $\operatorname{Rad}(1/2)$ coordinates and best-fit function from the function class $\mathcal{F}_0$. A large value of $\mathbb{E}\norm{R_n}_{\mathcal{F}_0}$ often indicates  the function class is too large to be statistically useful, and could lead to \emph{overfitting}. For our purposes, we use this quantity to estimate $\phi_n(\mathcal{F}, \delta)$ using the symmetrization lemma (Theorem \ref{thm:symmetrization}). Further, let us assume that the function class $\mathcal{F}$ has a uniform upper bound $U$. Then, using the symmetrization lemma and the bounded differences inequality (Theorem~\ref{thm:bounded-difference}), we have the following result:
+
+\begin{theorem}[{\cite[Theorem~4.6]{koltchinskii2008}}]\label{thm:emprisk-rc}
+  If the function class $\mathcal{F}$ has a uniform upper bound $U$, the for all $t > 0$, we have
+  \[
+    \mathbb{P}\left(\frac{1}{2}\norm{R_n}_\mathcal{F} - \frac{2tU}{\sqrt{n}} - \frac{U}{2\sqrt{n}}\leq \norm{P_n - P}_\mathcal{F} \leq 2\norm{R_n}_\mathcal{F} + \frac{3tU}{\sqrt{n}}\right) \geq 1 - 2e^{-t^2/2}
+  \]
+\end{theorem}
+
+A complete proof of this result may be found in \cite[Chapter~4]{wainwright2019high}, alongside instructive computations of Rademacher complexity for various function classes.
+
+While a useful result in its own right, the bound does not capture the size of the variances of the functions in the function class $\mathcal{F}$, relying instead on the uniform upper bound $U$ as a\emph{variance proxy}. In this sense, it is a uniform version of Hoeffding's inequality. We now discuss a uniform version of Bernstein's inequality, which is often more useful in statistical applications. The proof involves a clever use of both the Bosquet (Theorem~\ref{thm:bousquet}) and Klein-Rio bounds (Theorem~\ref{thm:klein-rio})for Talagrand's inequality, and can be found in \cite{koltchinskii2008}. Consider the theoretical and empirical variance bounds for the function class $\mathcal{F}$ given by
+\[\sigma^2_P(\mathcal{F}) \coloneqq \sup_{f \in \mathcal{F}} Pf^2 \text{ and } \sigma^2_n(\mathcal{F}) \coloneqq \sup_{f \in \mathcal{F}} P_nf^2.\]
+
+\begin{theorem}[{\cite[Theorem~4.7]{koltchinskii2008}}]\label{thm:new_talagrand}
+  There exists an absolute constant $K>0$ such that for any $t \geq 1$, the following bounds hold with probability at least $1 - e^{-t}$.
+  \begin{align*}
+    \left| \|R_n\|_F - \mathbb{E}\|R_n\|_F \right| & \leq K \left[\sqrt{\frac{t}{n}\left(\sigma_n^2(F) + U\|R_n\|_F\right)}+ \frac{tU}{n}\right], \\
+    \mathbb{E}\|R_n\|_F                            & \leq K \left[ \|R_n\|_F + \sigma_n(F)\sqrt{\frac{t}{n}} + \frac{tU}{n} \right],              \\
+    \sigma_P^2(F)                                  & \leq K \left(\sigma_n^2(F)+ U\|R_n\|_F+ \frac{tU}{n}\right), \text{ and}                     \\
+    \sigma_n^2(F)                                  & \leq K \left(\sigma_P^2(F)+ U\,\mathbb{E}\|R_n\|_F+ \frac{tU}{n}\right).
+  \end{align*}
+
+  Further, for all \(t \geq 1\) with probability at least \(1 - e^{-t}\),
+  \begin{align*}
+    \mathbb{E}\|P_n - P\|_F                             & \leq K \left[\|R_n\|_F+ \sigma_n(F)\sqrt{\frac{t}{n}}+ \frac{tU}{n}\right],                  \\
+    \left|\|P_n - P\|_F -\mathbb{E}\|P_n - P\|_F\right| & \leq K \left[\sqrt{\frac{t}{n}\left(\sigma_n^2(F) + U\|R_n\|_F\right)}+ \frac{tU}{n}\right].
+  \end{align*}
+\end{theorem}
+
+\subsection{Estimating the $\delta$-minimal set $\mathcal{F}(\delta)$}
+
+We assume that the functions in $\mathcal{F}$ have the uniform bound $U = 1$. As alluded to at the beginning of this section, we now estimate the $\delta$-minimal sets $\mathcal{F}(\delta)$ of the risk using the empirical risk. As it turns out, this can be effectively approximated by $\hat{\mathcal{F}}_P(\delta) = \mathcal{F}_{P_n}(\delta)$, provided $\delta$ is not too small. This is precisely the content of the following lemma.
+
+\begin{lemma}[{\cite[Lemma~4.2]{koltchinskii2008}}]\label{lem:minimal_set}
+  Let \(\delta_n^\diamond\) be a number such that
+  \(\delta_n^\diamond \geq U_n^\sharp\!\left(\frac{1}{2}\right).\)
+  Then, there exists an event of probability at least \( 1 - \sum_{\delta_j \geq \delta_n^\diamond} e^{-t_j}\) such that on this event, for all \(\delta \geq \delta_n^\diamond\),
+  \[\mathcal{F}(\delta)\subset\hat{\mathcal{F}}_n(3\delta/2)\quad \text{and} \quad\hat{\mathcal{F}}_n(\delta)\subset\mathcal{F}(2\delta).
+  \]
+\end{lemma}
+The proof of this lemma utilizes the bounds on the ratio of empirical and theoretical risk developed in the previous section (Theorem~\ref{thm:ratio_bounds}).
+
+\subsection{Robustness of the fixed point equation for empirical risk}
+
+The next step is to estimate the uniform upper bound $\bar{U}_n(\delta)$ from the empirical data. This would require an estimation of the $L_2(P)$-diameter of $\mathcal{F}(\delta)$ in terms of the $L_2(P_n)$-diameter of $\hat{\mathcal{F}}_n(\delta)$.\\
+
+For a measure $Q$, let $\rho_Q$ denote the metric induced on $L_2(Q)$. Consider the empirical versions of the functions $ D$ and $\phi$, defined by
+\[\hat{D}_n (\delta) \coloneqq \sup_{f,g \in \hat{\mathcal{F}}_n(\delta)} \rho_{P_n}(f,g) \text{  and  } \hat{\phi}_n(\delta)\coloneqq \norm{R_n}_{\mathcal{\hat{\mathcal{F}}_n(\delta)}}.\]
+Given a decreasing sequence $\{\delta_j\}$ with $\delta_0 = 1$ as usual, and a sequence $\{t_j\}$ of real numbers, and for constants $\hat{c} \geq 1$ and $\hat{K} \geq 2$ to be chosen momentarily, define the empirical upper bound:
+\[
+  \hat{U}_n(\delta)\coloneqq\hat{K}\left(\hat{\phi}_n(\hat{c}\delta_j)+\hat{D}_n(\hat{c}\delta_j)\sqrt{\frac{t_j}{n}}+\frac{t_j}{n}\right),\qquad\delta \in (\delta_{j+1}, \delta_j],\; j \geq 0.
+\]
+
+
+We wish to estimate the above quantity in terms of theoretical bounds. To this end, for absolute constants to be chosen soon, define
+\[
+  \bar{U}_n(\delta)\coloneqq \bar{K}\left(\phi_n(\mathcal{F},\delta_j)+D(\delta_j)\sqrt{\frac{t_j}{n}}+\frac{t_j}{n}\right),\qquad\delta \in (\delta_{j+1}, \delta_j],\; j \geq 0,
+\]
+\[
+  \tilde{U}_n(\delta)\coloneqq \tilde{K}\left(\phi_n(\tilde{c}\delta_j)+D(\tilde{c}\delta_)\sqrt{\frac{t_j}{n}}+\frac{t_j}{n}\right),\qquad\delta \in (\delta_{j+1}, \delta_j],\; j \geq 0.
+\]
+
+Note that $\hat{U}_n$ is data-dependent while $\tilde{U}_n$ and $\bar{U}_n$ depend on both the empirical data and the underlying distribution. In accordance with our notations in the previous section, define
+\[\bar{V}_n(\delta) \coloneqq \bar{U}^\flat_n(\delta), \hat{V}_n(\delta) \coloneqq \hat{U}^\flat_n(\delta), \tilde{V}_n(\delta) \coloneqq \tilde{U}^\flat_n(\delta),\]
+and $\hat{\delta}_n \coloneqq \hat{U}^\sharp_n(1/2), \,\tilde{\delta}_n \coloneqq \tilde{U}^\sharp_n(1/2)$. Finally, we chose the constants in the definition of $\bar{U}_n(\delta)$ and $  \leq $$\tilde{U}_n(\delta)$ such that for all $\delta>0$, $U_n(\delta) \leq \bar{U}_n(\delta) \leq \tilde{U}_n(\delta)$ and hence $\delta_n(\mathcal{F},P) \leq \bar{\delta}_n \leq \tilde{\delta}_n$. Indeed, the quantities $\bar{\delta}_n$ and $\tilde{\delta}_n$ often have the same order in many practical applications. This is to be expected, as the definitions of various estimates of $U_n(\delta)$ differ only up to a constant.\\
+
+  The following theorem shows that the empirical quantity $\hat{\delta}_n$ can be controlled in terms of the empirical quantities $\bar{\delta}_n$ and $\tilde{\delta}_n$. The proof uses Lemma \ref{lem:minimal_set} and Theorem \ref{thm:new_talagrand}.
+
+  \begin{theorem}[{\cite[Theorem~4.8]{koltchinskii2008}}]\label{thm:data_final}
+  For $\bar{\delta}_n$,$\tilde{\delta}_n$, and $\hat{\delta}_n$ as described above, we have
+  \[\mathbb{P}(\bar{\delta}_n \leq \hat{\delta}_n \leq \tilde{\delta}_n) \geq 1 - 3 \sum_{\delta_j \geq \bar{\delta}_n} e^{-t_j}\]
+\end{theorem}
+
+The quantities $\bar{\delta}_n$ and $\tilde{\delta}_n$ can be controlled (and indeed shown to be $O(n^{-1/2}$ or even $o(n^{-1/2})$ in special cases) using techniques outlined in the previous section. As these are of the same order in many practical applications, this often provides sharp (up to constants) bounds on the solution of the empirical fixed point problem $\hat{\delta}_n$. Thus, in such cases, the data-dependent ERM gives results comparable to the distribution-dependent ERM. This concludes an abstract description of the data-dependent ERM method. Concerete examples satisfying many of the aforementioned properties and heuristics may be found in \cite{koltchinskii2008}; we leave it to the interested reader to explore further.
