@@ -51,6 +51,7 @@ jobs:
 
       - name: Run R code to generate plots
         run: |
+          mkdir -p ./tex_files/plots
           Rscript code/bin_classification.r
         working-directory: ${{ github.workspace }}
 
