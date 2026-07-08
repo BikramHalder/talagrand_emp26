@@ -3,7 +3,7 @@ library("class") # for kNN
 library("e1071") # for SVM
 library("randomForest") # for randomForest
 library("dplyr") # for data manipulation
-library("ggplot2") #for plotting graphs
+library("ggplot2") # for plotting graphs
 
 # conditional expectation of Y given X=x: needed for estimating Bayes risk
 eta_function <- function(x1, alpha)  0.5 + 0.5 * sign(x1) * abs(x1)^alpha
