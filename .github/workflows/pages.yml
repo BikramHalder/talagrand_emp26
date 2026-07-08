@@ -61,6 +61,7 @@ jobs:
           working_directory: ./tex_files
           root_file: tgconc_report.tex
           latexmk_shell_escape: true
+          latexmk_use_xelatex: true
 
       - name: Create assets directory
         run: mkdir -p assets
