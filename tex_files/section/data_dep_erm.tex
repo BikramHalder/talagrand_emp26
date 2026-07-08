@@ -1,8 +1,8 @@
 \section{Data dependent Empirical Risk Minimization}\label{sec:data_ERM}
 
-The results of the previous section are useful when the underlying probability distribution $P$ is known or is being tested for. As the calculations for the quantities $\mathcal{E}_P, \mathcal{F}(\delta), \phi_n(\mathcal{F}, \delta)$, and $D(\mathcal{F}, \delta)$ rely heavily on the knowledge of $P$, these cannot be carried out directly if $P$ is unknown. Instead, we rely on the knowledge of the empirical distribution $P_n$ to estimate these quantities and apply the fixed point method developed in the previous section. This gives rise to a \emph{data-dependent} version of ERM. The robustness of these estimates will be verified by various forms of Talagrand's concentration inequality for empirical processes. As usual, we will indicate the main results involved in the development of the theory and discuss their proofs briefly. We refer the reader to \cite[Chapter~4]{koltchinskii2008} for the detailed arguments.\\
+The results of the previous section are useful when the underlying probability distribution $P$ is known or is being tested for. As the calculations for the quantities $\mathcal{E}_P, \mathcal{F}(\delta), \phi_n(\mathcal{F}, \delta)$, and $D(\mathcal{F}, \delta)$ rely heavily on the knowledge of $P$, these cannot be carried out directly if $P$ is unknown. Instead, we rely on the knowledge of the empirical distribution $P_n$ to estimate these quantities and apply the fixed point method developed in the previous section. This gives rise to a \emph{data-dependent} version of ERM. The robustness of these estimates will be verified by various forms of Talagrand's concentration inequality for empirical processes. As usual, we will indicate the main results involved in the development of the theory and discuss their proofs briefly. We refer the reader to \cite[Chapter~4]{koltchinskii2008} for the detailed arguments.
 
-\subsection{Empirical estimates for $\phi_{n}(\mathcal{F}, \delta)$: Comparison with Rademacher Complexity}
+\subsection{Empirical estimates for \texorpdfstring{$\phi_{n}(\mathcal{F}, \delta)$}{φ\_n(F,δ)}: Comparison with Rademacher Complexity}
 
 Recall that Talagrand's inequality shows the concentration of $\norm{P_n - P}$ around its mean $\phi_n(\mathcal{F}, \delta)$. Thus, the first natural step is to estimate $\mathbb{E}(\norm{P_n - P}_{\mathcal{F_0}})$ empirically for various functions classes $\mathcal{F_0}$. The usual approach in empirical process literature is to compare it to the \emph{Rademacher complexity} of the given data.
 
@@ -47,7 +47,7 @@ While a useful result in its own right, the bound does not capture the size of t
   \end{align*}
 \end{theorem}
 
-\subsection{Estimating the $\delta$-minimal set $\mathcal{F}(\delta)$}
+\subsection{Estimating the \texorpdfstring{$\delta$-minimal set $\mathcal{F}(\delta)$}{δ-minimal set F(δ)}}
 
 We assume that the functions in $\mathcal{F}$ have the uniform bound $U = 1$. As alluded to at the beginning of this section, we now estimate the $\delta$-minimal sets $\mathcal{F}(\delta)$ of the risk using the empirical risk. As it turns out, this can be effectively approximated by $\hat{\mathcal{F}}_P(\delta) = \mathcal{F}_{P_n}(\delta)$, provided $\delta$ is not too small. This is precisely the content of the following lemma.
 

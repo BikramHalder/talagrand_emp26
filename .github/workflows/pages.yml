@@ -47,6 +47,7 @@ jobs:
         run: |
           pak::local_install_dev_deps()
         shell: Rscript {0}
+        working-directory: code
 
       - name: Run R code to generate plots
         run: |
