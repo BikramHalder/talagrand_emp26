@@ -13,7 +13,6 @@
 \usepackage{amsmath, amsthm, amssymb, amsfonts}
 \usepackage{mathtools}
 \usepackage{mathrsfs}
-\usepackage{thmtools}
 \usepackage{bm, bbm}
 \usepackage{dsfont}
 \usepackage{tikz}
@@ -45,7 +44,7 @@
 \newcommand{\iid}{\ensuremath{\overset{\text{iid}}{\sim}}} % i.i.d. symbol
 
 %% ── Color setup ─────────────────────────────────────────────────
-% form https://latexcolor.com
+% from https://latexcolor.com
 % \definecolor{gray}{rgb}{0.5, 0.5, 0.5}
 \definecolor{blue(ncs)}{rgb}{0.0, 0.53, 0.74}
 \definecolor{bluegray}{rgb}{0.4, 0.6, 0.8}
@@ -54,20 +53,37 @@
 \definecolor{cerulean}{rgb}{0.0, 0.48, 0.65}
 
 %% ── Theorem styles ────────────────────────────────────────────────
-\declaretheoremstyle[name=Theorem, headfont={\sffamily\color{darkblue}}, bodyfont={\itshape}]{thmsty}
-\declaretheorem[style=thmsty,numberwithin=section]{theorem}
+%% Using pure amsthm (thmtools numberlike/sibling is broken with LaTeX 2026 kernel)
+\newtheoremstyle{thmsty}%        Theorem / Proposition / Lemma
+  {}{}{\itshape}{}%              body italic
+  {\sffamily\color{darkblue}}%   head: sans-serif, dark blue
+  {.}{ }{}
 
-\declaretheoremstyle[name=Proposition,]{prosty}
-\declaretheorem[style=prosty,numberlike=theorem]{proposition}
+\newtheoremstyle{defsty}%        Definition
+  {}{}{}{}%                      body upright
+  {\sffamily\color{cerulean}}%   head: sans-serif, cerulean
+  {.}{ }{}
 
-\declaretheoremstyle[name=Definition, headfont={\sffamily\color{cerulean}}]{defsty}
-\declaretheorem[style=defsty,numberlike=theorem]{definition}
+\newtheoremstyle{rmksty}%        Remark
+  {}{}{}{}%                      body upright
+  {\sffamily\color{brightmaroon}}% head: sans-serif, bright maroon
+  {.}{ }{}
 
-\declaretheoremstyle[name=Lemma, bodyfont={\itshape}, headfont={\sffamily\color{darkblue}}]{prcpsty}
-\declaretheorem[style=prcpsty,numberlike=theorem]{lemma}
+\newtheoremstyle{egsty}%         Example
+  {}{}{}{}%                      body upright
+  {\sffamily\color{bluegray}}%   head: sans-serif, blue-gray
+  {.}{ }{}
 
-\declaretheoremstyle[name=Remark, headfont={\sffamily\color{brightmaroon}}]{rmksty}
-\declaretheorem[style=rmksty,numberlike=theorem]{remark}
+\theoremstyle{thmsty}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
 
-\declaretheoremstyle[name=Example, headfont={\sffamily\color{bluegray}}]{egsty}
-\declaretheorem[style=egsty,numberlike=theorem]{example}
+\theoremstyle{defsty}
+\newtheorem{definition}[theorem]{Definition}
+
+\theoremstyle{rmksty}
+\newtheorem{remark}[theorem]{Remark}
+
+\theoremstyle{egsty}
+\newtheorem{example}[theorem]{Example}
